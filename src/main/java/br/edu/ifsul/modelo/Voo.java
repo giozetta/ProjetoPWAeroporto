@@ -22,7 +22,7 @@ import org.hibernate.validator.constraints.Length;
 
 @Entity
 @Table(name = "voo")
-class Voo implements Serializable{
+public class Voo implements Serializable{
     @Id
     @SequenceGenerator(name = "seq_voo", sequenceName = "seq_voo_id", allocationSize = 1)
     @GeneratedValue(generator = "seq_voo", strategy = GenerationType.SEQUENCE)
@@ -147,6 +147,15 @@ class Voo implements Serializable{
      */
     public void setEscalas(List<Aeroporto> escalas) {
         this.escalas = escalas;
+    }
+    
+    public void adicionarVooAgendado(VooAgendado obj){
+        obj.setVoo(this);
+        this.voosAgendados.add(obj);
+    }
+    
+    public void removerVooAgendado(int index){
+        this.voosAgendados.remove(index);
     }
 
     @Override

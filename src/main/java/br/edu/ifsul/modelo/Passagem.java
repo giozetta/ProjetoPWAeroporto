@@ -15,7 +15,6 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -30,8 +29,8 @@ public class Passagem implements Serializable{
     @Temporal(TemporalType.TIMESTAMP)
     private Calendar dataCompra;
     
-    @NotBlank(message = "A bagagem deve ser informado")
-    @Column(name = "nome", length = 50, nullable = false)
+    @NotNull(message = "A bagagem deve ser informada")
+    @Column(name = "bagagem", length = 50, nullable = false)
     private Integer bagagem;
     
     @NotNull(message = "A pessoa não pode ser nula")

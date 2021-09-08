@@ -24,7 +24,7 @@ import org.hibernate.validator.constraints.Length;
 
 @Entity
 @Table(name = "vooAgendado")
-class VooAgendado implements Serializable{
+public class VooAgendado implements Serializable{
     @Id
     @SequenceGenerator(name = "seq_vooAgendado", sequenceName = "seq_vooAgendado_id", allocationSize = 1)
     @GeneratedValue(generator = "seq_vooAgendado", strategy = GenerationType.SEQUENCE)
