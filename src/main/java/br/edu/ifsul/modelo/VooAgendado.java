@@ -50,6 +50,15 @@ public class VooAgendado implements Serializable{
     @JoinColumn(name = "voo_id", nullable = false)
     private Voo voo;
     
+    
+    public void adicionarPassagem(Passagem obj){
+        obj.setVooAgendado(this);
+        this.passagens.add(obj);
+    }
+    
+    public void removerPassagem(int index){
+        this.passagens.remove(index);
+    }
     /**
      * @return the id
      */

@@ -51,6 +51,15 @@ public class Voo implements Serializable{
                                        inverseJoinColumns = {@JoinColumn(name = "aeroporto_id")})
     private List<Aeroporto> escalas;
 
+    public void adicionarVooAgendado(VooAgendado obj){
+        obj.setVoo(this);
+        this.voosAgendados.add(obj);
+    }
+    
+    public void removerVooAgendado(int index){
+        this.voosAgendados.remove(index);
+    }
+    
     /**
      * @return the id
      */
@@ -148,15 +157,6 @@ public class Voo implements Serializable{
     public void setEscalas(List<Aeroporto> escalas) {
         this.escalas = escalas;
     }
-    
-    public void adicionarVooAgendado(VooAgendado obj){
-        obj.setVoo(this);
-        this.voosAgendados.add(obj);
-    }
-    
-    public void removerVooAgendado(int index){
-        this.voosAgendados.remove(index);
-    }
 
     @Override
     public int hashCode() {
@@ -181,5 +181,9 @@ public class Voo implements Serializable{
             return false;
         }
         return true;
+    }
+
+    public void setVooAgendado(VooAgendado vooAgendado) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
