@@ -2,8 +2,11 @@
 package br.edu.ifsul.modelo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,6 +21,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 
 @Entity
@@ -31,10 +35,11 @@ public class Voo implements Serializable{
     @Column(name = "descricao", columnDefinition = "text")
     private String descricao;
     
-    @NotBlank(message = "O tempo deve ser informado")
-    @Column(name="tempoEstimado", nullable = false, precision = 2)
+    @NotNull(message = "O tempo deve ser informado")
+    @Column(name="tempoEstimado", nullable = false, columnDefinition="numeric(4,2)")
     private Double tempoEstimado;
     
+    @NotNull(message = "O ativo deve ser informado")
     @Column(name="ativo", nullable = false)
     private Boolean ativo;
     
@@ -43,23 +48,14 @@ public class Voo implements Serializable{
     @Column(name = "periodicidade", length = 200, nullable = false)
     private String periodicidade;
     
-    @OneToMany(mappedBy = "voo", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<VooAgendado> voosAgendados;
+    @OneToMany(mappedBy = "voo", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<VooAgendado> voosAgendados = new ArrayList<>();
     
-    @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(name = "tb_escalas", joinColumns = {@JoinColumn(name = "voo_id")},
-                                       inverseJoinColumns = {@JoinColumn(name = "aeroporto_id")})
-    private List<Aeroporto> escalas;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name="escalas", joinColumns = @JoinColumn(name="id_voo", referencedColumnName="id", nullable=false),
+                               inverseJoinColumns = @JoinColumn(name="id_aeroporto", referencedColumnName="id", nullable=false))
+    private Set<Aeroporto> escalas = new HashSet<>();
 
-    public void adicionarVooAgendado(VooAgendado obj){
-        obj.setVoo(this);
-        this.voosAgendados.add(obj);
-    }
-    
-    public void removerVooAgendado(int index){
-        this.voosAgendados.remove(index);
-    }
-    
     /**
      * @return the id
      */
@@ -147,21 +143,30 @@ public class Voo implements Serializable{
     /**
      * @return the escalas
      */
-    public List<Aeroporto> getEscalas() {
+    public Set<Aeroporto> getEscalas() {
         return escalas;
     }
 
     /**
      * @param escalas the escalas to set
      */
-    public void setEscalas(List<Aeroporto> escalas) {
+    public void setEscalas(Set<Aeroporto> escalas) {
         this.escalas = escalas;
+    }
+    
+    public void setVooAgendado(VooAgendado vooAgendado) {
+        vooAgendado.setVoo(this);
+        this.voosAgendados.add(vooAgendado);
+    }
+    
+    public void removerVooAgendado(int index){
+        this.voosAgendados.remove(index);
     }
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 53 * hash + Objects.hashCode(this.id);
+        int hash = 3;
+        hash = 29 * hash + Objects.hashCode(this.id);
         return hash;
     }
 
@@ -183,7 +188,6 @@ public class Voo implements Serializable{
         return true;
     }
 
-    public void setVooAgendado(VooAgendado vooAgendado) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    
+    
 }

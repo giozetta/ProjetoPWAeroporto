@@ -2,6 +2,7 @@
 package br.edu.ifsul.modelo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
@@ -20,6 +21,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 
 @Entity
@@ -35,21 +37,24 @@ public class VooAgendado implements Serializable{
     @Column(name = "aeronave", length = 50, nullable = false)
     private String aeronave;
     
-    @NotBlank(message = "O total de passageiros deve ser informado")
-    @Column(name = "totalPassageiros", length = 50, nullable = false)
+    @NotNull(message = "O total de passageiros deve ser informado")
+    @Column(name = "totalPassageiros", nullable = false)
     private Integer totalPassageiros;
     
     @Column(name = "data", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Calendar data;
     
-    @OneToMany(mappedBy = "vooAgendado", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<Passagem> passagens;
+    @OneToMany(mappedBy = "vooAgendado", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<Passagem> passagens = new ArrayList<>();
     
     @ManyToOne
     @JoinColumn(name = "voo_id", nullable = false)
     private Voo voo;
     
+    public VooAgendado(){
+        
+    }
     
     public void adicionarPassagem(Passagem obj){
         obj.setVooAgendado(this);

@@ -9,6 +9,8 @@
     <class>br.edu.ifsul.modelo.Pessoa</class>
     <class>br.edu.ifsul.modelo.Voo</class>
     <class>br.edu.ifsul.modelo.VooAgendado</class>
+    <class>br.edu.ifsul.modelo.Permissao</class>
+    <class>br.edu.ifsul.modelo.Usuario</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/ProjetoPWAeroporto"/>
       <property name="javax.persistence.jdbc.user" value="postgres"/>
@@ -20,6 +22,7 @@
       <property name="hibernate.hbm2ddl.auto" value="update"/>
       <property name="hibernate.show_sql" value="false"/>
       <property name="hibernate.format_sql" value="false"/>
+      <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
     </properties>
   </persistence-unit>
 </persistence>
