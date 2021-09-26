@@ -12,13 +12,10 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.Length;
@@ -31,14 +28,10 @@ import org.hibernate.validator.constraints.Length;
 @Table(name = "usuario")
 public class Usuario implements Serializable{
     @Id
-    @SequenceGenerator(name = "seq_usuario", sequenceName = "seq_usuario_id", allocationSize = 1)
-    @GeneratedValue(generator = "seq_usuario", strategy = GenerationType.SEQUENCE)
-    private Integer id;
-    
-    @NotBlank(message = "O nome deve ser informado")
-    @Length(max = 100, message = "O nome não pode ter mais que {max} caracteres")
-    @Column(name = "nome", length = 100, nullable = false)
-    private String nome;
+    @NotBlank(message = "O nome de usuário deve ser informado")
+    @Length(max = 30, message = "O nome de usuário não pode ter mais que {max} caracteres")
+    @Column(name = "nome_usuario", length = 30, nullable = false)      
+    private String nome_usuario;
     
     @NotBlank(message = "A senha deve ser informada")
     @Length(max = 30, message = "A senha não pode ter mais que {max} caracteres")
@@ -48,37 +41,23 @@ public class Usuario implements Serializable{
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "permissoes",
             joinColumns = 
-                    @JoinColumn(name = "nome", referencedColumnName = "nome", nullable = false),
+                    @JoinColumn(name = "nome_usuario", referencedColumnName = "nome_usuario", nullable = false),
             inverseJoinColumns = 
                     @JoinColumn(name = "permissao", referencedColumnName = "nome", nullable = false))
     private Set<Permissao> permissoes = new HashSet<>();
 
     /**
-     * @return the id
+     * @return the nome_usuario
      */
-    public Integer getId() {
-        return id;
+    public String getNome_usuario() {
+        return nome_usuario;
     }
 
     /**
-     * @param id the id to set
+     * @param nome_usuario the nome_usuario to set
      */
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    /**
-     * @return the nome
-     */
-    public String getNome() {
-        return nome;
-    }
-
-    /**
-     * @param nome the nome to set
-     */
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setNome_usuario(String nome_usuario) {
+        this.nome_usuario = nome_usuario;
     }
 
     /**
@@ -94,19 +73,25 @@ public class Usuario implements Serializable{
     public void setSenha(String senha) {
         this.senha = senha;
     }
-    
+
+    /**
+     * @return the permissoes
+     */
     public Set<Permissao> getPermissoes() {
         return permissoes;
     }
 
+    /**
+     * @param permissoes the permissoes to set
+     */
     public void setPermissoes(Set<Permissao> permissoes) {
         this.permissoes = permissoes;
     }
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 89 * hash + Objects.hashCode(this.id);
+        int hash = 5;
+        hash = 47 * hash + Objects.hashCode(this.nome_usuario);
         return hash;
     }
 
@@ -122,10 +107,11 @@ public class Usuario implements Serializable{
             return false;
         }
         final Usuario other = (Usuario) obj;
-        if (!Objects.equals(this.id, other.id)) {
+        if (!Objects.equals(this.nome_usuario, other.nome_usuario)) {
             return false;
         }
         return true;
     }
-    
+
+
 }
