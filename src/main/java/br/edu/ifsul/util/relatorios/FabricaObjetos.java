@@ -4,6 +4,7 @@ package br.edu.ifsul.util.relatorios;
 import java.util.List;
 import java.util.ArrayList;
 import br.edu.ifsul.modelo.Pessoa;
+import br.edu.ifsul.modelo.VooAgendado;
 
 
 /*
@@ -29,6 +30,12 @@ public class FabricaObjetos {
         p1.setId(1);
         
         lista.add(p1);
+        return lista;
+    }
+    
+    public static List<VooAgendado> carregaVoosAgendados(){
+        List<VooAgendado> lista = new ArrayList<>();
+        
         return lista;
     }
     
